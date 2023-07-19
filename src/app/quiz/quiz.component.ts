@@ -16,7 +16,7 @@ export class QuizComponent extends TrackBy {
     public questions: Array<Question> | null = [];
 
     @Input()
-    public isSwapEnabled: boolean = false;
+    public isSwapEnabled = false;
 
     @Output()
     public readonly swap = new EventEmitter<{ question: Question; index: number }>();

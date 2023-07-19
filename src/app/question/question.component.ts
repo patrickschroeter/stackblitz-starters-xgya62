@@ -17,7 +17,7 @@ export class QuestionComponent extends TrackBy {
     @Input()
     public userAnswer?: string;
     @Input()
-    public isSwapEnabled: boolean = false;
+    public isSwapEnabled = false;
 
     @Output()
     public readonly change = new EventEmitter<string>();

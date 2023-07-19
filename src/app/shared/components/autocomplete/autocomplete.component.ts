@@ -3,7 +3,7 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TrackBy } from '../../../utils/track-by';
 import { AutocompleteOption } from './autocomplete-option';
-import { BehaviorSubject, debounceTime, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, debounceTime, map, Observable } from 'rxjs';
 import { HighlightPipe } from '../../pipes/highlight/highlight.pipe';
 
 const timeoutToAllowClickBeforeClosingOverlayInMS = 100;
