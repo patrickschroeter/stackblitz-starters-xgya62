@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AnswersComponent } from './answers.component';
+import { fakeResults } from '../utils/testing/fake-results';
 
 describe('AnswersComponent', () => {
     let component: AnswersComponent;
@@ -12,6 +13,7 @@ describe('AnswersComponent', () => {
         });
         fixture = TestBed.createComponent(AnswersComponent);
         component = fixture.componentInstance;
+        component.data = fakeResults;
         fixture.detectChanges();
     });
 

@@ -48,6 +48,14 @@
         },
         {
             "files": [
+                "src/app/utils/testing/*.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/no-empty-function": "off"
+            }
+        },
+        {
+            "files": [
                 "*.html"
             ],
             "extends": [

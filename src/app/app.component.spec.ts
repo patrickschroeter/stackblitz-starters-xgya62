@@ -28,6 +28,6 @@ describe('AppComponent', () => {
 
         const compiled = fixture.nativeElement as HTMLElement;
 
-        expect(compiled.querySelector('.content span')?.textContent).toContain('ng-cert-nba app is running!');
+        expect(compiled.querySelector('[data-test-id="app-heading"]')?.textContent).toContain('QUIZ MAKER');
     });
 });
