@@ -1,14 +1,14 @@
-import {Component, Input} from '@angular/core';
-import {Results} from '../data.models';
+import { Component, Input } from '@angular/core';
+import { Results } from '../data.models';
 
 @Component({
-  selector: 'app-answers',
-  templateUrl: './answers.component.html',
-  styleUrls: ['./answers.component.css']
+    selector: 'app-answers',
+    templateUrl: './answers.component.html',
+    styleUrls: ['./answers.component.css'],
 })
 export class AnswersComponent {
 
-  @Input()
-  data!: Results;
+    @Input()
+    data!: Results;
 
 }
