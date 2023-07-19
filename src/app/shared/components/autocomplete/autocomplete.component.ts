@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, HostListener, Input } from '@angular/core';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TrackBy } from '../../../utils/track-by';
@@ -35,10 +35,17 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
     @Input({ required: true }) public options?: Array<AutocompleteOption> | null;
     @Input() public placeholder?: string;
 
+    @HostListener('document:click', ['$event'])
+    public onKeyUp(): void {
+        if (this._isOverlayOpen$.getValue()) {
+            this._isOverlayOpen$.next(false);
+        }
+    }
+
     public value?: AutocompleteOption;
     public isDisabled = false;
 
-    protected _isOverlayOpen$: Subject<boolean> = new Subject<boolean>();
+    protected _isOverlayOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public isOverlayOpen$: Observable<boolean> = this._isOverlayOpen$
         .pipe(
             debounceTime(timeoutToAllowClickBeforeClosingOverlayInMS),
@@ -71,18 +78,17 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
         this.isDisabled = isDisabled;
     }
 
-    public openOverlay(): void {
+    public openOverlay(event: Event): void {
         this._isOverlayOpen$.next(true);
+        event.stopPropagation();
     }
 
-    public closeOverlay(): void {
-        this._isOverlayOpen$.next(false);
-    }
-
-    public selectValue(value: AutocompleteOption): void {
+    public selectValue(event: Event, value: AutocompleteOption): void {
         this.writeValue(value);
         this.onTouched?.();
         this.filterOptions('');
+        this._isOverlayOpen$.next(false);
+        event.stopPropagation();
     }
 
     public filterOptions(search: string): void {

@@ -4,8 +4,7 @@
         [ngModel]="value?.label"
         [placeholder]="placeholder"
         [attr.disabled]="isDisabled || undefined"
-        (focus)="openOverlay()"
-        (blur)="closeOverlay()"
+        (click)="openOverlay($event)"
         (ngModelChange)="filterOptions($event)"
     >
 
@@ -16,7 +15,7 @@
         <div
             *ngFor="let option of filteredOptions$ | async; trackBy: trackByIndex;"
             class="option"
-            (click)="selectValue(option)"
+            (click)="selectValue($event, option)"
         >
             <span [innerHTML]="option.label | highlight: searchOptions.search"></span>
         </div>
