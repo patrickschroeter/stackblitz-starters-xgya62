@@ -10,7 +10,7 @@
     >
 
     <div
-        *ngIf="isOverlayOpen"
+        *ngIf="isOverlayOpen$ | async"
         class="autocomplete__overlay"
     >
         <div

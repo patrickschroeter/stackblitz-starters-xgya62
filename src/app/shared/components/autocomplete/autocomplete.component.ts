@@ -3,10 +3,10 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TrackBy } from '../../../utils/track-by';
 import { AutocompleteOption } from './autocomplete-option';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, debounceTime, map, Observable, Subject } from 'rxjs';
 import { HighlightPipe } from '../../pipes/highlight/highlight.pipe';
 
-const timeoutToAllowClickBeforeClosingOverlayInMS = 10;
+const timeoutToAllowClickBeforeClosingOverlayInMS = 100;
 
 @Component({
     standalone: true,
@@ -37,7 +37,12 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
 
     public value?: AutocompleteOption;
     public isDisabled = false;
-    public isOverlayOpen = false;
+
+    protected _isOverlayOpen$: Subject<boolean> = new Subject<boolean>();
+    public isOverlayOpen$: Observable<boolean> = this._isOverlayOpen$
+        .pipe(
+            debounceTime(timeoutToAllowClickBeforeClosingOverlayInMS),
+        );
 
     public onChange?: (value: string) => void;
     public onTouched?: () => void;
@@ -46,6 +51,7 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
     public filteredOptions$: Observable<Array<AutocompleteOption>> = this.search$
         .pipe(
             map(search => this._filterOptionsBySearch(this.options || [], search)),
+            debounceTime(timeoutToAllowClickBeforeClosingOverlayInMS),
         );
 
     public writeValue(option: AutocompleteOption): void {
@@ -66,12 +72,11 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
     }
 
     public openOverlay(): void {
-        this.isOverlayOpen = true;
+        this._isOverlayOpen$.next(true);
     }
+
     public closeOverlay(): void {
-        setTimeout(() => {
-            this.isOverlayOpen = false;
-        }, timeoutToAllowClickBeforeClosingOverlayInMS);
+        this._isOverlayOpen$.next(false);
     }
 
     public selectValue(value: AutocompleteOption): void {
@@ -81,6 +86,7 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
     }
 
     public filterOptions(search: string): void {
+        // Known issue: if you remove the search value the component value is still the same but not displayed
         this.search$.next(search);
     }
 
