@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Category, Difficulty, NestedCategory, Question } from '../data.models';
+import { Difficulty, Question } from '../data.models';
 import { filter, map, Observable, tap, withLatestFrom } from 'rxjs';
 import { QuizService } from '../core/quiz.service';
 import { TrackBy } from '../utils/track-by';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CategoryService } from '../core/category.service';
+import { AutocompleteOption } from '../shared/autocomplete/autocomplete-option';
+import { mapCategoriesToAutocompleteOptions } from '../utils/category-to-autocomplete-option';
 
 interface QuizForm {
     category: FormControl<string | null>;
@@ -20,8 +22,8 @@ interface QuizForm {
 })
 export class QuizMakerComponent extends TrackBy {
 
-    public categories$: Observable<Array<NestedCategory>>;
-    public subCategories$?: Observable<Array<Category>>;
+    public categories$: Observable<Array<AutocompleteOption>>;
+    public subCategories$?: Observable<Array<AutocompleteOption>>;
     public questions$?: Observable<Array<Question>>;
 
     public quizForm = new FormGroup<QuizForm>({
@@ -33,6 +35,12 @@ export class QuizMakerComponent extends TrackBy {
     public errorMessage?: string;
     public numberOfSwaps = 0;
 
+    public difficulties: Array<AutocompleteOption> = [
+        { value: 'easy', label: 'Easy' },
+        { value: 'medium', label: 'Medium' },
+        { value: 'hard', label: 'Hard' },
+    ];
+
     constructor(
         protected _quizService: QuizService,
         protected _categoryService: CategoryService,
@@ -41,15 +49,17 @@ export class QuizMakerComponent extends TrackBy {
 
         this._categoryService.fetchAllCategories();
 
-        this.categories$ = _categoryService.allCategoriesAsList$;
+        this.categories$ = _categoryService.allCategoriesAsList$
+            .pipe(mapCategoriesToAutocompleteOptions);
 
         this.subCategories$ = this.quizForm.get('category')?.valueChanges
             .pipe(
                 tap(() => this.quizForm.get('subCategory')?.setValue('')),
                 tap(() => this.errorMessage = undefined),
                 filter((value): value is string => value !== null),
-                withLatestFrom(this.categories$),
+                withLatestFrom(this._categoryService.allCategoriesAsList$),
                 map(([value, categories]) => categories.find(category => category.id === +value)?.children || []),
+                mapCategoriesToAutocompleteOptions,
             );
 
         this.questions$ = this._quizService.currentQuiz$;

@@ -1,0 +1,6 @@
+<select [ngModel]="value" (ngModelChange)="writeValue($event)" (change)="onTouched?.()" [class.disabled]="isDisabled">
+    <option *ngIf="placeholder" value="">{{ placeholder }}</option>
+    <option [value]="option.value" *ngFor="let option of options; trackBy: trackByIndex">
+        {{ option.label }}
+    </option>
+</select>

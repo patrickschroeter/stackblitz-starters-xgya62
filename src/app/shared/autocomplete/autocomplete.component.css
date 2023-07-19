@@ -1,0 +1,8 @@
+.disabled {
+    opacity: 0.7;
+    /*
+        Pointer events none is not a good disabled solution (due to a11y & ux reasons).
+        Version 2 would include better user feedback
+     */
+    pointer-events: none;
+}
