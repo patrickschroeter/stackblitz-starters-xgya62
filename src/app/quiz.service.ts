@@ -8,47 +8,51 @@ import { ApiQuestion, Category, Difficulty, Question, Results } from './data.mod
 })
 export class QuizService {
 
-    private API_URL = 'https://opentdb.com/';
-    private latestResults!: Results;
+    private readonly _apiUrl = 'https://opentdb.com/';
+    private _latestResults!: Results;
 
-    constructor(private http: HttpClient) {
+    private readonly _randomThreshold = 0.5;
+
+    constructor(private readonly _http: HttpClient) {
     }
 
-    getAllCategories(): Observable<Category[]> {
-        return this.http.get<{ trivia_categories: Category[] }>(this.API_URL + 'api_category.php').pipe(
+    public getAllCategories(): Observable<Array<Category>> {
+        return this._http.get<{ trivia_categories: Array<Category> }>(`${ this._apiUrl }api_category.php`).pipe(
             map(res => res.trivia_categories),
         );
     }
 
-    createQuiz(categoryId: string, difficulty: Difficulty): Observable<Question[]> {
-        return this.http.get<{ results: ApiQuestion[] }>(
-            `${ this.API_URL }/api.php?amount=5&category=${ categoryId }&difficulty=${ difficulty.toLowerCase() }&type=multiple`)
+    public createQuiz(categoryId: string, difficulty: Difficulty): Observable<Array<Question>> {
+        return this._http.get<{ results: Array<ApiQuestion> }>(
+            `${ this._apiUrl }/api.php?amount=5&category=${ categoryId }&difficulty=${ difficulty.toLowerCase() }&type=multiple`)
             .pipe(
                 map(res => {
-                    const quiz: Question[] = res.results.map(q => (
+                    const quiz: Array<Question> = res.results.map(q => (
                         {
                             ...q,
-                            all_answers: [...q.incorrect_answers, q.correct_answer].sort(() => (Math.random() > 0.5)
+                            all_answers: [...q.incorrect_answers, q.correct_answer].sort(() => (Math.random() > this._randomThreshold)
                                 ? 1
                                 : -1),
                         }
                     ));
+
                     return quiz;
                 }),
             );
     }
 
-    computeScore(questions: Question[], answers: string[]): void {
+    public computeScore(questions: Array<Question>, answers: Array<string>): void {
         let score = 0;
+
         questions.forEach((q, index) => {
-            if (q.correct_answer == answers[index]) {
+            if (q.correct_answer === answers[index]) {
                 score++;
             }
         });
-        this.latestResults = { questions, answers, score };
+        this._latestResults = { questions, answers, score };
     }
 
-    getLatestResults(): Results {
-        return this.latestResults;
+    public getLatestResults(): Results {
+        return this._latestResults;
     }
 }

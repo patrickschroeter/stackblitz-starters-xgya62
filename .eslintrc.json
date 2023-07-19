@@ -1,7 +1,8 @@
 {
     "root": true,
     "ignorePatterns": [
-        "projects/**/*"
+        "projects/**/*",
+        "polyfills.ts"
     ],
     "overrides": [
         {
@@ -12,7 +13,10 @@
                 "eslint:recommended",
                 "plugin:@typescript-eslint/recommended",
                 "plugin:@angular-eslint/recommended",
-                "plugin:@angular-eslint/template/process-inline-templates"
+                "plugin:@angular-eslint/template/process-inline-templates",
+                "@team23/eslint-config-team23-standard",
+                "@team23/eslint-config-team23-ts",
+                "@team23/eslint-config-team23-angular"
             ],
             "rules": {
                 "@angular-eslint/directive-selector": [
@@ -30,7 +34,16 @@
                         "prefix": "app",
                         "style": "kebab-case"
                     }
-                ]
+                ],
+                "@angular-eslint/no-output-native": "off"
+            }
+        },
+        {
+            "files": [
+                "*.spec.ts"
+            ],
+            "rules": {
+                "no-undef": "off"
             }
         },
         {
@@ -39,9 +52,12 @@
             ],
             "extends": [
                 "plugin:@angular-eslint/template/recommended",
-                "plugin:@angular-eslint/template/accessibility"
+                "plugin:@angular-eslint/template/accessibility",
+                "@team23/eslint-config-team23-angular"
             ],
-            "rules": {}
+            "rules": {
+                "@angular-eslint/template/no-call-expression": "off"
+            }
         }
     ]
 }

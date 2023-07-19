@@ -1,23 +1,27 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Category, Difficulty, Question } from '../data.models';
 import { Observable } from 'rxjs';
 import { QuizService } from '../quiz.service';
+import { TrackBy } from '../utils/track-by';
 
 @Component({
     selector: 'app-quiz-maker',
     templateUrl: './quiz-maker.component.html',
     styleUrls: ['./quiz-maker.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuizMakerComponent {
+export class QuizMakerComponent extends TrackBy {
 
-    categories$: Observable<Category[]>;
-    questions$!: Observable<Question[]>;
+    public categories$: Observable<Array<Category>>;
+    public questions$!: Observable<Array<Question>>;
 
-    constructor(protected quizService: QuizService) {
-        this.categories$ = quizService.getAllCategories();
+    constructor(protected _quizService: QuizService) {
+        super();
+
+        this.categories$ = _quizService.getAllCategories();
     }
 
-    createQuiz(cat: string, difficulty: string): void {
-        this.questions$ = this.quizService.createQuiz(cat, difficulty as Difficulty);
+    public createQuiz(cat: string, difficulty: string): void {
+        this.questions$ = this._quizService.createQuiz(cat, difficulty as Difficulty);
     }
 }

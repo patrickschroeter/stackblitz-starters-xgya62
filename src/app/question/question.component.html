@@ -3,7 +3,7 @@
     <button
         (click)="buttonClicked(answer)"
         [class]="getButtonClass(answer)"
-        *ngFor="let answer of question.all_answers"
+        *ngFor="let answer of question.all_answers; trackBy: trackByIndex"
         [innerHTML]="answer"
     >
     </button>

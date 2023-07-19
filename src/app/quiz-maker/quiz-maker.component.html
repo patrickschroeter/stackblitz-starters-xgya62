@@ -2,7 +2,7 @@
     <div class="col-sm-11">
         <select #category id="categorySelect">
             <option>Select category</option>
-            <option [value]="category.id" *ngFor="let category of categories$ | async">
+            <option [value]="category.id" *ngFor="let category of categories$ | async; trackBy: trackByIndex">
                 {{category.name}}
             </option>
         </select>

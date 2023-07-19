@@ -1,23 +1,25 @@
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { Question } from '../data.models';
 import { QuizService } from '../quiz.service';
 import { Router } from '@angular/router';
+import { TrackBy } from '../utils/track-by';
 
 @Component({
     selector: 'app-quiz',
     templateUrl: './quiz.component.html',
     styleUrls: ['./quiz.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuizComponent {
+export class QuizComponent extends TrackBy {
 
     @Input()
-    questions: Question[] | null = [];
+    public questions: Array<Question> | null = [];
 
-    userAnswers: string[] = [];
-    quizService = inject(QuizService);
-    router = inject(Router);
+    public userAnswers: Array<string> = [];
+    public quizService = inject(QuizService);
+    public router = inject(Router);
 
-    submit(): void {
+    public submit(): void {
         this.quizService.computeScore(this.questions ?? [], this.userAnswers);
         this.router.navigateByUrl('/result');
     }

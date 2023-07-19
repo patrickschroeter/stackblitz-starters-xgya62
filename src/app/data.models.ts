@@ -9,19 +9,19 @@ export interface ApiQuestion {
     difficulty: string;
     question: string;
     correct_answer: string;
-    incorrect_answers: string[];
+    incorrect_answers: Array<string>;
 }
 
 export interface Question {
     question: string;
     correct_answer: string;
-    incorrect_answers: string[];
-    all_answers: string[];
+    incorrect_answers: Array<string>;
+    all_answers: Array<string>;
 }
 
 export interface Results {
-    questions: Question[];
-    answers: string[];
+    questions: Array<Question>;
+    answers: Array<string>;
     score: number;
 }
 
