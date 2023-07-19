@@ -1,4 +1,4 @@
-<div class="autocomplete">
+<div class="autocomplete" *ngIf="{ search: search$ | async } as searchOptions">
     <input
         type="text"
         [ngModel]="value?.label"
@@ -16,10 +16,9 @@
         <div
             *ngFor="let option of filteredOptions$ | async; trackBy: trackByIndex;"
             class="option"
-            (click)="writeValue(option); onTouched?.()"
+            (click)="selectValue(option)"
         >
-
-            {{ option.label }}
+            <span [innerHTML]="option.label | highlight: searchOptions.search"></span>
         </div>
     </div>
 </div>

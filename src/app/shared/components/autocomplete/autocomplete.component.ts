@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { TrackBy } from '../../utils/track-by';
+import { TrackBy } from '../../../utils/track-by';
 import { AutocompleteOption } from './autocomplete-option';
 import { BehaviorSubject, map, Observable } from 'rxjs';
+import { HighlightPipe } from '../../pipes/highlight/highlight.pipe';
 
 const timeoutToAllowClickBeforeClosingOverlayInMS = 10;
 
@@ -19,6 +20,7 @@ const timeoutToAllowClickBeforeClosingOverlayInMS = 10;
         NgForOf,
         ReactiveFormsModule,
         NgIf,
+        HighlightPipe,
     ],
     providers: [
         {
@@ -40,8 +42,8 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
     public onChange?: (value: string) => void;
     public onTouched?: () => void;
 
-    protected _search$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-    public filteredOptions$: Observable<Array<AutocompleteOption>> = this._search$
+    public search$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    public filteredOptions$: Observable<Array<AutocompleteOption>> = this.search$
         .pipe(
             map(search => this._filterOptionsBySearch(this.options || [], search)),
         );
@@ -72,8 +74,14 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
         }, timeoutToAllowClickBeforeClosingOverlayInMS);
     }
 
+    public selectValue(value: AutocompleteOption): void {
+        this.writeValue(value);
+        this.onTouched?.();
+        this.filterOptions('');
+    }
+
     public filterOptions(search: string): void {
-        this._search$.next(search);
+        this.search$.next(search);
     }
 
     protected _filterOptionsBySearch(options: Array<AutocompleteOption>, search: string): Array<AutocompleteOption> {

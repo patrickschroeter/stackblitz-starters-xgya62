@@ -1,5 +1,5 @@
 import { Category } from '../data.models';
-import { AutocompleteOption } from '../shared/autocomplete/autocomplete-option';
+import { AutocompleteOption } from '../shared/components/autocomplete/autocomplete-option';
 import { map, Observable } from 'rxjs';
 
 export const categoryToAutocompleteOption = (question: Category): AutocompleteOption => ({

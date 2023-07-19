@@ -7,6 +7,7 @@ import { CategoryService } from '../core/category.service';
 import { stubCategoryService } from '../utils/testing/stub-categories-service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AutocompleteComponent } from '../shared/components/autocomplete/autocomplete.component';
 
 describe('GameStatsComponent', () => {
     let component: QuizMakerComponent;
@@ -21,6 +22,7 @@ describe('GameStatsComponent', () => {
             ],
             imports: [
                 ReactiveFormsModule,
+                AutocompleteComponent,
             ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
         })

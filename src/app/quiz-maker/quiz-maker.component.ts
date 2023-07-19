@@ -5,7 +5,7 @@ import { QuizService } from '../core/quiz.service';
 import { TrackBy } from '../utils/track-by';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CategoryService } from '../core/category.service';
-import { AutocompleteOption } from '../shared/autocomplete/autocomplete-option';
+import { AutocompleteOption } from '../shared/components/autocomplete/autocomplete-option';
 import { mapCategoriesToAutocompleteOptions } from '../utils/category-to-autocomplete-option';
 
 interface QuizForm {
