@@ -6,6 +6,7 @@
         [attr.disabled]="isDisabled || undefined"
         (focus)="openOverlay()"
         (blur)="closeOverlay()"
+        (ngModelChange)="filterOptions($event)"
     >
 
     <div
@@ -13,7 +14,7 @@
         class="autocomplete__overlay"
     >
         <div
-            *ngFor="let option of options; trackBy: trackByIndex;"
+            *ngFor="let option of filteredOptions$ | async; trackBy: trackByIndex;"
             class="option"
             (click)="writeValue(option); onTouched?.()"
         >
