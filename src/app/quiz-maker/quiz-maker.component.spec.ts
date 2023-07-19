@@ -1,8 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuizMakerComponent } from './quiz-maker.component';
-import { QuizService } from '../quiz.service';
+import { QuizService } from '../core/quiz.service';
 import { stubQuizService } from '../utils/testing/stub-quiz-service';
+import { CategoryService } from '../core/category.service';
+import { stubCategoryService } from '../utils/testing/stub-categories-service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('GameStatsComponent', () => {
     let component: QuizMakerComponent;
@@ -13,7 +17,12 @@ describe('GameStatsComponent', () => {
             declarations: [QuizMakerComponent],
             providers: [
                 { provide: QuizService, useValue: stubQuizService },
+                { provide: CategoryService, useValue: stubCategoryService },
             ],
+            imports: [
+                ReactiveFormsModule,
+            ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
         })
             .compileComponents();
 

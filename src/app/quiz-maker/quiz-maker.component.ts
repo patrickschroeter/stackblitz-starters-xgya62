@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Category, Difficulty, NestedCategory, Question } from '../data.models';
 import { filter, map, Observable, tap, withLatestFrom } from 'rxjs';
-import { QuizService } from '../quiz.service';
+import { QuizService } from '../core/quiz.service';
 import { TrackBy } from '../utils/track-by';
 import { FormControl, FormGroup } from '@angular/forms';
+import { CategoryService } from '../core/category.service';
 
 interface QuizForm {
     category: FormControl<string | null>;
@@ -31,12 +32,15 @@ export class QuizMakerComponent extends TrackBy {
 
     public errorMessage?: string;
 
-    constructor(protected _quizService: QuizService) {
+    constructor(
+        protected _quizService: QuizService,
+        protected _categoryService: CategoryService,
+    ) {
         super();
 
-        this._quizService.fetchAllCategories();
+        this._categoryService.fetchAllCategories();
 
-        this.categories$ = _quizService.allCategoriesAsList$;
+        this.categories$ = _categoryService.allCategoriesAsList$;
 
         this.subCategories$ = this.quizForm.get('category')?.valueChanges
             .pipe(
@@ -55,7 +59,7 @@ export class QuizMakerComponent extends TrackBy {
             return;
         }
 
-        if (this._quizService.hasSubCategories(options.category) && !options.subCategory) {
+        if (this._categoryService.hasSubCategories(options.category) && !options.subCategory) {
             this.errorMessage = 'Please Select a sub-category';
 
             return;

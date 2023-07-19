@@ -1,6 +1,7 @@
-import { Category } from '../../data.models';
+import { NestedCategory } from '../../data.models';
 
-export const fakeCategory: Category = {
+export const fakeCategory: NestedCategory = {
     id: 1,
     name: 'Category 1',
+    children: [],
 };

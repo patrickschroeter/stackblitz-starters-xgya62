@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { Question } from '../data.models';
-import { QuizService } from '../quiz.service';
+import { QuizService } from '../core/quiz.service';
 import { Router } from '@angular/router';
 import { TrackBy } from '../utils/track-by';
 

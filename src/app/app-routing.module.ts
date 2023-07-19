@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { QuizMakerComponent } from './quiz-maker/quiz-maker.component';
 import { AnswersComponent } from './answers/answers.component';
-import { QuizService } from './quiz.service';
+import { QuizService } from './core/quiz.service';
 
 const routes: Routes = [
     {
