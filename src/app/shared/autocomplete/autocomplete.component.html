@@ -1,6 +1,24 @@
-<select [ngModel]="value" (ngModelChange)="writeValue($event)" (change)="onTouched?.()" [class.disabled]="isDisabled">
-    <option *ngIf="placeholder" value="">{{ placeholder }}</option>
-    <option [value]="option.value" *ngFor="let option of options; trackBy: trackByIndex">
-        {{ option.label }}
-    </option>
-</select>
+<div class="autocomplete">
+    <input
+        type="text"
+        [ngModel]="value?.label"
+        [placeholder]="placeholder"
+        [attr.disabled]="isDisabled || undefined"
+        (focus)="openOverlay()"
+        (blur)="closeOverlay()"
+    >
+
+    <div
+        *ngIf="isOverlayOpen"
+        class="autocomplete__overlay"
+    >
+        <div
+            *ngFor="let option of options; trackBy: trackByIndex;"
+            class="option"
+            (click)="writeValue(option); onTouched?.()"
+        >
+
+            {{ option.label }}
+        </div>
+    </div>
+</div>

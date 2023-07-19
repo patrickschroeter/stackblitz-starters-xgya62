@@ -4,11 +4,13 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModu
 import { TrackBy } from '../../utils/track-by';
 import { AutocompleteOption } from './autocomplete-option';
 
+const timeoutToAllowClickBeforeClosingOverlayInMS = 10;
+
 @Component({
     standalone: true,
     selector: 'app-autocomplete',
     templateUrl: './autocomplete.component.html',
-    styleUrls: ['./autocomplete.component.css'],
+    styleUrls: ['./autocomplete.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         AsyncPipe,
@@ -30,15 +32,17 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
     @Input({ required: true }) public options?: Array<AutocompleteOption> | null;
     @Input() public placeholder?: string;
 
-    public value?: string;
+    public value?: AutocompleteOption;
     public isDisabled = false;
+    public isOverlayOpen = false;
 
     public onChange?: (value: string) => void;
     public onTouched?: () => void;
 
-    public writeValue(value: string): void {
-        this.value = value;
-        this.onChange?.(value);
+    public writeValue(option: AutocompleteOption): void {
+        console.log('# value:\n', option);
+        this.value = option;
+        this.onChange?.(option.value);
     }
 
     public registerOnChange(fn: () => void): void {
@@ -51,6 +55,15 @@ export class AutocompleteComponent extends TrackBy implements ControlValueAccess
 
     public setDisabledState(isDisabled: boolean): void {
         this.isDisabled = isDisabled;
+    }
+
+    public openOverlay(): void {
+        this.isOverlayOpen = true;
+    }
+    public closeOverlay(): void {
+        setTimeout(() => {
+            this.isOverlayOpen = false;
+        }, timeoutToAllowClickBeforeClosingOverlayInMS);
     }
 
 }

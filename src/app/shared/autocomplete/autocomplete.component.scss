@@ -1,0 +1,26 @@
+:host {
+    display: inline-block;
+}
+
+.autocomplete {
+    position: relative;
+}
+
+.autocomplete__overlay {
+    position: absolute;
+    top: 100%;
+    left: 4px;
+
+    width: 100%;
+    background: #fff;
+    border: .0625rem solid var(--form-border-color);
+}
+
+.option {
+    padding: calc(var(--universal-padding) / 2);
+    cursor: pointer;
+
+    &:hover {
+        background: #eee;
+    }
+}
