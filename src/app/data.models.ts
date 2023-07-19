@@ -3,6 +3,10 @@ export interface Category {
     name: string;
 }
 
+export type NestedCategory = Category & {
+    children: Array<Category>;
+};
+
 export interface ApiQuestion {
     category: string;
     type: string;

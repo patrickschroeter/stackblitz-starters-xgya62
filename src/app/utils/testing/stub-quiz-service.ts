@@ -8,6 +8,6 @@ import { fakeResults } from './fake-results';
 export const stubQuizService: Partial<QuizService> = {
     computeScore: (_questions: Array<Question>, _answers: Array<string>): void => {},
     createQuiz: (_categoryId: string, _difficulty: Difficulty): Observable<Array<Question>> => of([fakeQuestion]),
-    getAllCategories: (): Observable<Array<Category>> => of([fakeCategory]),
+    fetchAllCategories$: (): Observable<Array<Category>> => of([fakeCategory]),
     getLatestResults: (): Results => fakeResults,
 };

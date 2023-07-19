@@ -1,21 +1,38 @@
 <div class="row">
-    <div class="col-sm-11">
-        <select #category id="categorySelect">
-            <option>Select category</option>
+    <form class="col-sm-11" [formGroup]="quizForm">
+        <select id="categorySelect" formControlName="category">
+            <option value="">Select category</option>
             <option [value]="category.id" *ngFor="let category of categories$ | async; trackBy: trackByIndex">
                 {{category.name}}
             </option>
         </select>
-        <select #difficulty id="difficultySelect">
-            <option>Select difficulty</option>
-            <option>Easy</option>
-            <option>Medium</option>
-            <option>Hard</option>
+
+        <ng-container *ngIf="subCategories$ | async as subCategories">
+            <ng-container *ngIf="subCategories.length > 0">
+                <select id="subCategorySelect" formControlName="subCategory">
+                    <option value="">Select sub category</option>
+                    <option [value]="category.id" *ngFor="let category of subCategories; trackBy: trackByIndex">
+                        {{ category.name }}
+                    </option>
+                </select>
+            </ng-container>
+        </ng-container>
+
+        <select id="difficultySelect" formControlName="difficulty">
+            <option value="">Select difficulty</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
         </select>
-        <button class="primary" id="createBtn" (click)="createQuiz(category.value, difficulty.value)">Create</button>
-    </div>
+
+        <button class="primary" id="createBtn" (click)="createQuiz(quizForm.value)">Create</button>
+    </form>
 
 </div>
 <div class="row">
-    <app-quiz [questions]="questions$ | async"></app-quiz>
+    <ng-container *ngIf="errorMessage; else questionTemplate">{{ errorMessage }}</ng-container>
+
+    <ng-template #questionTemplate>
+        <app-quiz [questions]="questions$ | async"></app-quiz>
+    </ng-template>
 </div>
