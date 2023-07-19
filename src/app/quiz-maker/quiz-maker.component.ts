@@ -31,6 +31,7 @@ export class QuizMakerComponent extends TrackBy {
     });
 
     public errorMessage?: string;
+    public numberOfSwaps = 0;
 
     constructor(
         protected _quizService: QuizService,
@@ -50,6 +51,8 @@ export class QuizMakerComponent extends TrackBy {
                 withLatestFrom(this.categories$),
                 map(([value, categories]) => categories.find(category => category.id === +value)?.children || []),
             );
+
+        this.questions$ = this._quizService.currentQuiz$;
     }
 
     public createQuiz(options: FormGroup<QuizForm>['value']): void {
@@ -73,7 +76,16 @@ export class QuizMakerComponent extends TrackBy {
 
         this.errorMessage = undefined;
 
-        this.questions$ = this._quizService.createQuiz(options.subCategory || options.category, options.difficulty as Difficulty);
+        this._quizService.createQuiz(options.subCategory || options.category, options.difficulty as Difficulty);
+    }
+
+    public get isSwapEnabled(): boolean {
+        return this.numberOfSwaps < 1;
+    }
+
+    public swapQuestion(event: { question: Question; index: number }): void {
+        this._quizService.swapQuestion(event.index);
+        this.numberOfSwaps = this.numberOfSwaps + 1;
     }
 
 }

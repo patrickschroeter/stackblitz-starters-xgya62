@@ -7,4 +7,12 @@
         [innerHTML]="answer"
     >
     </button>
+    <ng-container *ngIf="isSwapEnabled">
+        <button
+            class="inverse"
+            (click)="swapQuestion(question)"
+        >
+            Change question
+        </button>
+    </ng-container>
 </div>

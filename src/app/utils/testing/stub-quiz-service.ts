@@ -8,4 +8,5 @@ export const stubQuizService: Partial<QuizService> = {
     computeScore: (_questions: Array<Question>, _answers: Array<string>): void => {},
     createQuiz: (_categoryId: string, _difficulty: Difficulty): Observable<Array<Question>> => of([fakeQuestion]),
     getLatestResults: (): Results => fakeResults,
+    swapQuestion: () => {},
 };

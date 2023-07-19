@@ -16,9 +16,14 @@ export class QuestionComponent extends TrackBy {
     public correctAnswer?: string;
     @Input()
     public userAnswer?: string;
+    @Input()
+    public isSwapEnabled: boolean = false;
 
     @Output()
     public readonly change = new EventEmitter<string>();
+
+    @Output()
+    public readonly swap = new EventEmitter<Question>();
 
     public currentSelection!: string;
 
@@ -43,5 +48,9 @@ export class QuestionComponent extends TrackBy {
     public buttonClicked(answer: string): void {
         this.currentSelection = answer;
         this.change.emit(answer);
+    }
+
+    public swapQuestion(question: Question): void {
+        this.swap.emit(question);
     }
 }

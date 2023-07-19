@@ -1,6 +1,8 @@
 <app-question
     *ngFor="let q of questions; index as i; trackBy: trackByIndex" [question]="q"
+    [isSwapEnabled]="isSwapEnabled"
     (change)="userAnswers[i] = $event"
+    (swap)="swapQuestion($event, i)"
 >
 </app-question>
 <div>

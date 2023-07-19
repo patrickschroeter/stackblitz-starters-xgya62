@@ -33,6 +33,10 @@
     <ng-container *ngIf="errorMessage; else questionTemplate">{{ errorMessage }}</ng-container>
 
     <ng-template #questionTemplate>
-        <app-quiz [questions]="questions$ | async"></app-quiz>
+        <app-quiz
+            [isSwapEnabled]="isSwapEnabled"
+            [questions]="questions$ | async"
+            (swap)="swapQuestion($event)"
+        ></app-quiz>
     </ng-template>
 </div>
